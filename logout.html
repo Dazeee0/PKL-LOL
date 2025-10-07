@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="iso-8859-1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0ea5e9">
+  <title id="title"></title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .logout-container {
+      width: 440px;
+      padding: 48px 36px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(32px) saturate(180%);
+      border-radius: 32px;
+      box-shadow: 0 8px 32px rgba(14, 165, 233, 0.25);
+      text-align: center;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 10;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .logout-header {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .logout-icon {
+      font-size: 120px;
+      color: #38bdf8;
+      text-shadow: 0 0 25px rgba(56,189,248,0.5);
+      margin-bottom: 10px;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(56,189,248,0.3); }
+      to { text-shadow: 0 0 30px rgba(56,189,248,0.8); }
+    }
+
+    .logout-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    table.logout-table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text-secondary);
+      text-align: left;
+      margin: 12px 0 20px;
+      font-size: 14px;
+    }
+
+    table.logout-table td {
+      padding: 6px 0;
+    }
+
+    table.logout-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+      width: 45%;
+    }
+
+    .relogin-button {
+      width: 100%;
+      height: 54px;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      box-shadow: 0 8px 24px rgba(14,165,233,0.4);
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .relogin-button:hover {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width:480px){
+      .logout-container {width:90%;padding:32px 24px;}
+      .logout-icon {font-size:90px;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ocean-container">
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+  </div>
+
+  <script>
+    function openLogin() {
+      if (window.name != 'hotspot_logout') return true;
+      open('$(link-login)', '_blank', '');
+      window.close();
+      return false;
+    }
+  </script>
+
+  <div class="logout-container">
+    <div class="brand-logo" style="margin-bottom:12px;">TKJ</div>
+
+    <div class="logout-icon">&#xf2be;</div>
+    <div class="logout-header">Anda Telah Keluar</div>
+    <div class="logout-text">Sampai jumpa, <b id="user">$(username)</b></div>
+
+    <table class="logout-table">
+      <tr><td>IP Address</td><td>$(ip)</td></tr>
+      <tr><td>MAC Address</td><td>$(mac)</td></tr>
+      <tr><td>Durasi</td><td>$(uptime)</td></tr>
+      <tr><td>Upload</td><td>$(bytes-in-nice)</td></tr>
+      <tr><td>Download</td><td>$(bytes-out-nice)</td></tr>
+
+      $(if remain-bytes-total)
+      <tr><td>Sisa Kuota</td><td>$(remain-bytes-total-nice)</td></tr>
+      $(endif)
+
+      $(if session-time-left)
+      <tr><td>Sisa Waktu</td><td>$(session-time-left)</td></tr>
+      $(endif)
+    </table>
+
+    <form action="$(link-login)" name="login" onSubmit="return openLogin()">
+      <button class="relogin-button" type="submit">
+        <i class="icon icon-login">&#xe803;</i> Login Kembali
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('title').textContent = window.location.hostname + " | Logout";
+  </script>
+</body>
+</html>

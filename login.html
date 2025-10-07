@@ -1,0 +1,68 @@
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login WiFi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ocean-container">
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="brand-logo">TKJ</div>
+      <h1 class="login-title">Selamat Datang</h1>
+      <p class="login-subtitle">Masukkan username dan password untuk akses internet</p>
+    </div>
+
+    <!-- Mikrotik login form -->
+    <form name="login" action="$(link-login-only)" method="post" id="loginForm">
+      <input type="hidden" name="dst" value="$(link-orig)">
+      <input type="hidden" name="popup" value="true">
+
+      <div class="form-group">
+        <label class="form-label" for="username">Username</label>
+        <div class="input-container">
+          <input type="text" name="username" id="username" class="form-input" placeholder="Masukkan Username" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-container">
+          <input type="password" name="password" id="password" class="form-input" placeholder="Masukkan Password" required>
+        </div>
+      </div>
+
+      <button type="submit" class="login-button">
+        <div class="button-content">
+          <div class="loading-spinner"></div>
+          <div class="success-check"></div>
+          <span class="button-text">Masuk</span>
+        </div>
+      </button>
+    </form>
+
+    <div class="additional-options">
+      <button type="button" id="qrLoginBtn">Masuk dengan QR Code</button>
+      <a href="voucher.html" id="voucherBtn" class="forgot-password">Masukkan Voucher</a>
+    </div>
+  </div>
+
+  <!-- QR Modal -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-content">
+      <video id="qrVideo" autoplay></video>
+      <button class="close-modal" id="closeQr">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Script Section -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <script src="lel.js"></script>
+</body>
+</html>

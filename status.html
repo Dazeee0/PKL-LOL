@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="title"></title>
+
+  $(if refresh-timeout)
+  <meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+  $(endif)
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .status-container {
+      width: 420px;
+      padding: 40px 36px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(32px) saturate(180%);
+      border-radius: 28px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-premium);
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .status-header {
+      margin-bottom: 28px;
+    }
+    .status-header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .status-header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 6px 0 0;
+    }
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .status-table td {
+      padding: 6px 0;
+    }
+    .status-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 600;
+      width: 50%;
+    }
+    iframe#exp {
+      width: 100%;
+      height: 22px;
+      border: none;
+    }
+    .logout-button {
+      width: 100%;
+      margin-top: 28px;
+      height: 48px;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .logout-button:hover {
+      background: linear-gradient(135deg, #f87171, #ef4444);
+      transform: translateY(-2px);
+    }
+    @media (max-width:480px){
+      .status-container{width:90%;padding:28px 20px;}
+    }
+  </style>
+</head>
+
+<body $(if advert-pending == 'yes') onLoad="openAdvert()" $(endif)>
+  <div class="ocean-container">
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+    <div class="depth-layer"></div>
+  </div>
+
+  <div class="status-container">
+    <div class="status-header">
+      <div class="brand-logo">TKJ</div>
+      <h1>Status Koneksi</h1>
+      <p>Informasi akun dan pemakaian</p>
+    </div>
+
+    <form action="$(link-logout)" name="logout" onSubmit="return openLogout()">
+      $(if login-by == 'trial')
+      <p>Selamat datang <b>Trial User</b></p>
+      $(elif login-by != 'mac')
+      <p>Selamat datang <b id="user">$(username)</b></p>
+      $(endif)
+
+      <table class="status-table">
+        <tr><td>IP Address</td><td>$(ip)</td></tr>
+        <tr><td>MAC Address</td><td>$(mac)</td></tr>
+        <tr><td>Upload</td><td>$(bytes-in-nice)</td></tr>
+        <tr><td>Download</td><td>$(bytes-out-nice)</td></tr>
+        <tr><td>Terkoneksi</td><td>$(uptime)</td></tr>
+
+        $(if remain-bytes-total)
+        <tr><td>Sisa Kuota</td><td>$(remain-bytes-total-nice)</td></tr>
+        $(endif)
+        $(if session-time-left)
+        <tr><td>Sisa Waktu</td><td>$(session-time-left)</td></tr>
+        $(endif)
+        <tr><td>Expired</td><td><iframe id="exp" src="about:blank"></iframe></td></tr>
+      </table>
+
+      $(if login-by-mac != 'yes')
+      <button class="logout-button" type="submit">Logout</button>
+      $(endif)
+    </form>
+  </div>
+
+  <script>
+    $(if advert-pending == 'yes')
+    var popup = '';
+    function focusAdvert(){if(window.focus) popup.focus();}
+    function openAdvert(){popup=open('$(link-advert)','hotspot_advert','');setTimeout("focusAdvert()",1000);}
+    $(endif)
+
+    function openLogout(){
+      if(window.name!='hotspot_status') return true;
+      open('$(link-logout)','hotspot_logout','toolbar=0,location=0,status=0,resizable=1,width=320,height=260');
+      window.close();
+      return false;
+    }
+
+    document.getElementById('title').textContent = window.location.hostname + " | Status";
+
+    var userEl=document.getElementById('user');
+    if(userEl){
+      var usr=userEl.textContent.trim();
+      var url="https://example.com/status/status.php?name=";
+      var SessionName="wifijoss";
+      document.getElementById('exp').src=url+usr+"&session="+SessionName;
+    }
+  </script>
+
+  <script src="lel.js"></script>
+</body>
+</html>
